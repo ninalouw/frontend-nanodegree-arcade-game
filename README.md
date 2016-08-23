@@ -2,7 +2,7 @@
 ===============================
 ##Introduction
 ===============================
-This is the third project in the Udacity Frontend Nanodegree course. After completing an introductory course in Javascript and one in Object-Oriented Javascript students are expected to build this classic arcade game using Javascript and HTML5. The app.js file includes the code that I have written, but the engine.js and resources.js files were provided by Udacity.
+This is the fourth project in the Udacity Frontend Nanodegree course. After completing an introductory course in Javascript and one in Object-Oriented Javascript students are expected to build this classic arcade game using Javascript and HTML5. The app.js file includes the code that I have written, but the engine.js and resources.js files were provided by Udacity.
 
 ##Instructions to run the app
 ===============================
