@@ -1,88 +1,131 @@
 
+var allEnemies = []; // stores all the enemies
+var player;
 var reachedWater = false;
+var Helper = function(){}
+/*
+ * Function returns a random value. It takes an array of possible values as a parameter.
+ */
+Helper.returnRandomValue = function(possibleValues){
+    var randomStartingPosition = Math.floor(Math.random() * possibleValues.length);
+    return possibleValues[randomStartingPosition];
+}
+
+/*
+ * This function checks whether two elements overlap/touch.
+ * The function needs two figures as parameters and returns a boolean.
+ */
+Helper.overlap = function(enemyFig, player) {
+
+    return !(player.x + enemyFig.dx >
+            (enemyFig.x + enemyFig.width) || // player is to the right of enemyFig
+            (player.x + player.width - enemyFig.dx) < enemyFig.x || // player is to the left of enemyFig
+            player.y + (player.height - enemyFig.dy) < (enemyFig.y) || //player is above enemyFig
+            player.y > (enemyFig.y + (enemyFig.height - enemyFig.dy))) //player is below enemyFig
+}
 
 // Enemies our player must avoid
 var Enemy = function() {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
-
-    // The image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
+    /* Variables applied to each of our instances go here,
+    * we've provided one for you to get started
+    * The image/sprite for our enemies, this uses
+    * a helper we've provided to easily load images
+    */
     this.sprite = 'images/enemy-bug.png';
-    //I think this sets the initial location://
+    /*This sets the initial location of the enemy and the random y-values
+    * needed to cause multiple enemies to be constantly moving across the screen.
+    */
     this.x = 0;
-    this.y = 300; //look at how to set random locs --returnRandomValue()?//
-    this.width = 171; //width of sprite in pixels//
-    this.height = 101; //height of sprite in pixels//
-    this.speed = Math.floor(Math.random() * 225);//returnRandomValue?//
-    this.dy = 50; //small value we add to sprite after every frame to give illusion of movement//
-    this.dx = 85;//small value we add to sprite after every frame to give illusion of movement//
+    this.y = Helper.returnRandomValue([72, 155, 238]);// the y-axis coordinates of the paved tracks enemies can run on
+    this.width = 171; //width of sprite in pixels
+    this.height = 101; //height of sprite in pixels
+    this.speed = Helper.returnRandomValue([200, 250, 280, 300, 320, 350, 400]);
+    this.dy = 50; //y offset
+    this.dx = 100; // x offset
 };
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
-Enemy.prototype.update = function(dt) { //took out player as a parameter//
-    // You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
-    //I think this updates the enemy location, but not sure how to include dt//
-    if (this.x >= 505){
-        this.x += (this.speed) * dt;
-    }
-    else {
-         this.x = 0;
-    }
-    //I think this handles collisions with the Player//
-    //this.checkCollision(player);
+Enemy.prototype.update = function(dt) {
+    /* You should multiply any movement by the dt parameter
+    * which will ensure the game runs at the same speed for
+    *all computers.
+    */
+     this.x += (this.speed) * dt;
+    /*
+    * This checks for collision between enemy and player.
+    * If any enemy touches with the player, the reset function
+    * is called on the player and it is
+    * returned to the bottom of the screen.
+    */
+    allEnemies.forEach(function(enemy, index) {
+        if(Helper.overlap(enemy, player)){
+            alert ("You died!")
+            player.reset();
+        }
+    });
 };
 
-//checkCollisions - handles player and enemy collisions//
-Enemy.prototype.checkCollision = function(player){
-    //if(Math.abs(player.x - this.x) < this.collisionWidth && Math.abs(player.y - this.y) < this.collisionHeight){
-        //player.reset();
-
-
-    };
-
-// Draw the enemy on the screen, required method for game
+// This function draws the enemy on the screen.
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-    console.log(this.x, this.y);
+    console.log(this.x, this.y); //remove this later
 };
 
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
-var Player = function(){
-//This loads the player image//
-    this.playerIcon = 'images/char-boy.png';
-//I think this sets the initial location://
-    this.x = 202;
-    this.y = 404;
-    this.width = 171; //width of sprite in pixels//
-    this.height = 101; //height of sprite in pixels//
+//This function generates enemies
+Enemy.generateEnemies = function() {
+    allEnemies.push(new Enemy());
+    Enemy.removeOffScreenEnemies();
+    var delay;
+    delay = Helper.returnRandomValue([0, 500, 750, 1000]);
+    setTimeout(Enemy.generateEnemies, delay);
+};
+
+//This function removes enemies that go off canvas. Canvas width = 505
+Enemy.removeOffScreenEnemies = function() {
+    allEnemies.forEach(function(enemy, index) {
+        if(enemy.x > 505){
+            allEnemies.splice(index, 1);
+        }
+    });
 }
 
-// Update the player's location, handle collisions with enemy//
+/* This Player class deals with everything to do with the player
+* and includes an update(), render() and
+* a handleInput() method.
+*/
+var Player = function(){
+//This loads the player image
+    this.playerIcon = 'images/char-boy.png';
+//This sets the initial location of the player
+    this.x = 202;
+    this.y = 404;
+    this.width = 171; //width of sprite in pixels
+    this.height = 101; //height of sprite in pixels
+}
+
+/* This function updates the player, if we wanted
+*to add extra functionality to the player
+*/
 Player.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-    //I think this updates the player location, but not sure how to include dt//
-    //this.x += dt * 200;
 
 }
 
-// Draws the player onscreen//
+// This function draws the player onscreen
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.playerIcon), this.x, this.y);
-  console.log(this.x,this.y);
+  console.log(this.x,this.y); //remove this
 }
 
-//The handleInput method which receives user input, allowedKeys//
+/*The handleInput method which receives user input, from allowedKeys which
+* are defined below.The switch function within this function defines the x
+* and y values that the player can have, which prevents the player from going
+* off the canvas.tileWidth = 101, tileHeight = 83, canvasWidth = 505, canvasHeight=606
+*/
 Player.prototype.handleInput = function(keyCode) {
-//** Here we must define something so that player can't go offscreen//
-//tileWidth = 101, tileHeight = 83, canvasWidth = 505, canvasHeight=606//
 switch (keyCode){
     case 'left':
     if(this.x - 101 < 0){
@@ -93,7 +136,7 @@ switch (keyCode){
     }
     break;
     case 'right':
-    if(this.x + 101 >= 404){ //furthest right player can go//
+    if(this.x + 101 >= 404){ //furthest right player can go
         this.x = 404;
     }
     else{
@@ -103,7 +146,7 @@ switch (keyCode){
     case 'up':
     if(this.y - 72 < 0){
         this.y = 0;
-        reachedWater = true;      //var reachedWater, which must be added to reset function//
+        reachedWater = true; //var reachedWater, which must be added to reset function
         alert("You have won!");
         player.reset();
 
@@ -113,7 +156,7 @@ switch (keyCode){
     }
     break;
     case 'down':
-    if(this.y + 83 >= 404){ //Player's max dist from top of canvas. 380? check size of player//
+    if(this.y + 83 >= 404){ //Player's max dist from top of canvas.
         this.y = 404;
     }
     else{
@@ -122,24 +165,26 @@ switch (keyCode){
     break;
 }
 
-console.log(this.x, this.y);
+console.log(this.x, this.y); //remove this
 };
 
-//The game reset method - moves player back to initial location when the player reaches the water//
+/*The game reset method - moves player back to initial location
+* when the reset function is called on the player.
+*/
 Player.prototype.reset = function(){
-    this.x = 202; //make the x & y these values?//
+    this.x = 202;
     this.y = 404;
 };
 
-// Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
-var allEnemies = [new Enemy(),new Enemy(),new Enemy()];
-var player = new Player();
+/* Instantiation of objects. Enemy objects in an array called allEnemies.
+ * player object is in a variable called player.
+ */
+Enemy.generateEnemies();
+player = new Player();
 
-
-// This listens for key presses and sends the keys to your
-// Player.handleInput() method. You don't need to modify this.
+/* This listens for key presses and sends the keys to your
+ * Player.handleInput() method.
+ */
 document.addEventListener('keyup', function(e) {
     var allowedKeys = {
         37: 'left',
