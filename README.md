@@ -1,6 +1,19 @@
-frontend-nanodegree-arcade-game
+#Frogger: frontend-nanodegree-arcade-game
 ===============================
+##Introduction
+===============================
+This is the third project in the Udacity Frontend Nanodegree course. After completing an introductory course in Javascript and one in Object-Oriented Javascript students are expected to build this classic arcade game using Javascript and HTML5. The app.js file includes the code that I have written, but the engine.js and resources.js files were provided by Udacity.
 
-Students should use this [rubric](https://review.udacity.com/#!/projects/2696458597/rubric) for self-checking their submission. Make sure the functions you write are **object-oriented** - either class functions (like Player and Enemy) or class prototype functions such as Enemy.prototype.checkCollisions, and that the keyword 'this' is used appropriately within your class and class prototype functions to refer to the object the function is called upon. Also be sure that the **readme.md** file is updated with your instructions on both how to 1. Run and 2. Play your arcade game.
+##Instructions to run the app
+===============================
+* Download the project [here](https://github.com/ninalouw/frontend-nanodegree-arcade-game)
+* Open the index.html file in your browser.
 
-For detailed instructions on how to get started, check out this [guide](https://docs.google.com/document/d/1v01aScPjSWCCWQLIpFqvg3-vXLH2e8_SZQKC8jNO0Dc/pub?embedded=true).
+##How to play the game
+===============================
+* The goal of the game is to get the player to the water and to avoid the bugs.
+* If you reach the water your score will increase.
+* If you collide with bugs your score will decrease.
+* You can move the player using the arrow keys up, down, left and right.
+
+For the official guidelines for this project see this [rubric](https://review.udacity.com/#!/projects/2696458597/rubric) compiled by Udacity.
