@@ -1,8 +1,8 @@
+"use strict";
 var allEnemies = []; // stores all the enemies
 var player;
 var reachedWater = false;
 var playerDied = false;
-"use strict";
 var Helper = function() {};
 /*
  * Function returns a random value. It takes an array of possible values as a parameter.
@@ -19,10 +19,10 @@ Helper.returnRandomValue = function(possibleValues) {
 Helper.overlap = function(enemyFig, player) {
 
     return !(player.x + enemyFig.dx >
-            (enemyFig.x + enemyFig.width) || // player is to the right of enemyFig
-            (player.x + player.width - enemyFig.dx) < enemyFig.x || // player is to the left of enemyFig
-            player.y + (player.height - enemyFig.dy) < (enemyFig.y) || //player is above enemyFig
-            player.y > (enemyFig.y + (enemyFig.height - enemyFig.dy))) //player is below enemyFig
+        (enemyFig.x + enemyFig.width) || // player is to the right of enemyFig
+        (player.x + player.width - enemyFig.dx) < enemyFig.x || // player is to the left of enemyFig
+        player.y + (player.height - enemyFig.dy) < (enemyFig.y) || //player is above enemyFig
+        player.y > (enemyFig.y + (enemyFig.height - enemyFig.dy))); //player is below enemyFig
 };
 
 // Enemies our player must avoid
@@ -53,7 +53,12 @@ Enemy.prototype.update = function(dt) {
      *all computers.
      */
     this.x += (this.speed) * dt;
-
+    allEnemies.forEach(function(enemy, index) {
+        if (Helper.overlap(enemy, player)) {
+            playerDied = true;
+            console.log("You died!");
+        }
+    });
 };
 
 // This function draws the enemy on the screen.
