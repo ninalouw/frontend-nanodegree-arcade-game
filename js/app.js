@@ -2,6 +2,7 @@ var allEnemies = []; // stores all the enemies
 var player;
 var reachedWater = false;
 var playerDied = false;
+"use strict";
 var Helper = function() {};
 /*
  * Function returns a random value. It takes an array of possible values as a parameter.
@@ -52,18 +53,7 @@ Enemy.prototype.update = function(dt) {
      *all computers.
      */
     this.x += (this.speed) * dt;
-    /*
-     * This checks for collision between enemy and player.
-     * If any enemy touches with the player, the reset function
-     * is called on the player and it is
-     * returned to the bottom of the screen.
-     */
-    allEnemies.forEach(function(enemy, index) {
-        if (Helper.overlap(enemy, player)) {
-            playerDied = true;
-            console.log("You died!");
-        }
-    });
+
 };
 
 // This function draws the enemy on the screen.
@@ -107,11 +97,13 @@ var Player = function() {
 /* This function updates the player, and deals with
  * the score functions.
  */
+
 Player.prototype.update = function() {
     this.drawScore();
     this.increaseScore();
     this.decreaseScore();
 };
+
 
 // This function draws the player onscreen
 Player.prototype.render = function() {
@@ -173,7 +165,7 @@ Player.prototype.drawScore = function() {
 Player.prototype.increaseScore = function() {
     if (reachedWater) {
         this.score++;
-        player.reset();
+        this.reset();
         reachedWater = false;
     }
 };
@@ -181,7 +173,7 @@ Player.prototype.increaseScore = function() {
 Player.prototype.decreaseScore = function() {
     if (playerDied) {
         this.score--;
-        player.reset();
+        this.reset();
         playerDied = false;
     }
 };
