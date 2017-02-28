@@ -1,4 +1,4 @@
-#Frogger: frontend-nanodegree-arcade-game
+#Frogger
 ===============================
 ##Introduction
 ===============================
@@ -8,6 +8,7 @@ This is the fourth project in the Udacity Frontend Nanodegree course. After comp
 ===============================
 * Download the project [here](https://github.com/ninalouw/frontend-nanodegree-arcade-game)
 * Open the index.html file in your browser.
+* Or view the live app [here](https://frogger-arcade-game-1.herokuapp.com/).
 
 ##How to play the game
 ===============================
